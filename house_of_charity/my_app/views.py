@@ -69,7 +69,7 @@ def registration_ngo(request,did):
                 u.set_password(p)
                 u.save()
                 # print(u)
-                context["Sucess"]="Regestration Successfull now you can login"
+                # context["Sucess"]="Regestration Successfull now you can login"
                 # with transaction.atomic():
                 #     retrive=n
                 #     source=User.objects.get(email=retrive)
@@ -405,15 +405,17 @@ def nlogout(request):
 
 def ngo_profile(request):
     context = {}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
-    print(b)
-    context['id']=b
-    
+    if ngo_details.objects.exists():
+        a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
+        b=a['u_id']
+        print(b)
+        context['id']=b
+        context['new']=ngo_details.objects.filter(email = request.user.email)
+        objj=ngo.objects.filter(email = request.user.email)
+        context['ngo']=objj
+    else:
+        context['id']="no data found"
     u=User.objects.filter(id=request.user.id)
-    context['new']=ngo_details.objects.filter(email = request.user.email)
-    objj=ngo.objects.filter(email = request.user.email)
-    context['ngo']=objj
     if request.method=="POST" :
         n=request.POST["name"]
         e=request.POST["email"]
@@ -422,8 +424,10 @@ def ngo_profile(request):
         w=request.POST["works"]
         aw=request.POST["awards"]
         i=request.FILES["image"]
+        print("details of NGOO",n,e,a,c,w)
         ngo_details.objects.create(name=n,email=e,address=a,category=c,works=w,awards=aw,pimage=i,u_id=u[0])
         ngo.objects.filter(email = request.user.email).delete()
+        return redirect(ngo_profile)
     return render(request,'ngo_profile.html', context)
 
 
@@ -557,13 +561,13 @@ def to_be_received_daily(request,did):   # data from the form is collected in th
 
 def donations_received(request):
     context={}
-    
     a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
     b=a['u_id']
     print(b)
     context['id']=b
     
     for n in ngo_details.objects.filter(u_id=request.user.id):
+        context['m']=money.objects.filter(ngo_id=n.id)
         context['f']=food.objects.filter(ngo_id=n.id,Status="Received")
         context['c']=daily.objects.filter(ngo_id=n.id,Status="Received")
     return render(request,'donations_received.html',context)

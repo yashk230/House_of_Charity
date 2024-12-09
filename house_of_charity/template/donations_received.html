@@ -12,10 +12,9 @@
         <h1>All the donations made will appear here</h1>
         <div class="col-12">
             <div class="row">
-                <!-- <div class="col-md-4">
-                    <h5>This part will contain money donation</h5>
-                </div> -->
-
+                <div>
+                    {% include "sidebar_user.html"%}
+                </div>
                 <div class="col-md-8">
                     <h5>This part will contain food</h5>
                         <table>
@@ -24,7 +23,7 @@
                                 <th>Place Of making</th>
                                 <th>Time when made</th>
                                 <th>Serving per person</th>
-                                <th>Expires within(hrs)</th>
+                                {% comment %} <th>Expires within(hrs)</th> {% endcomment %}
                                 <th>Address</th>
                                 <th>Donor</th>
                             </tr>
@@ -35,7 +34,7 @@
                                     <td>{{f.Place}}</td>
                                     <td>{{f.Time}}</td>
                                     <td>{{f.Serving}}</td>
-                                    <td>{{f.Expire}}</td>
+                                    {% comment %} <td>{{f.Expire}}</td> {% endcomment %}
                                     <td>{{f.Address}}</td>
                                     <td>{{f.userid.email}}</td>
                                 </tr>
@@ -60,11 +59,35 @@
                                 </tr>
                             {% endfor %}
                         </table>
-                    </div>
 
-                <!-- <div class="col-md-4">
-                    <h5>This part will contain daily</h5>
-                </div> -->
+
+                        <h5>All the Money donations</h5>
+                        <table>
+                            <tr>
+                                <th>Amout</th>
+                                <th>Payment ID</th>
+                                <th>Time</th>
+                                <th>Donor</th>
+                                {% comment %} <th>Expires within(hrs)</th> {% endcomment %}
+                                {% comment %} <th>Address</th>
+                                <th>Donor</th> {% endcomment %}
+                            </tr>
+                            {% for m in m %}
+
+                                <tr>
+                                    <td>{{m.amount}}</td>
+                                    <td>{{m.razorpay_payment_id}}</td>
+                                    <td>{{m.created_at}}</td>
+                                    <td>{{m.user_id}}</td>
+                                    {% comment %} <td>{{f.Expire}}</td> {% endcomment %}
+                                    {% comment %} <td>{{f.Address}}</td>
+                                    <td>{{f.userid.email}}</td> {% endcomment %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+
+
+                    </div>
             </div>
         </div>
     </div>

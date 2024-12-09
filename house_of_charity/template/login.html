@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row mt-5">
         <div class="col-md-4 mx-auto mb-2 bg-success-subtle text-danger-emphasis mb-5 bg-body-tertiary rounded">
-            <h2>login From</h2>
+            <h2>Login From users</h2>
             <!-- uname,password conf password register -->
             <form method="POST" action="#">
               {% csrf_token %}
@@ -34,6 +34,7 @@
                 New user <a href="/register">register here / </a>
                 
                       <a href="/fpass">Forgot Password??</a>
+                <a href="/ngo_login">Ngo Login</a>
                 <br>
                 {% comment %} Login as <a href="/ngo_login">NGO</a> {% endcomment %}
                 {% if error %}

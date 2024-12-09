@@ -13,12 +13,18 @@
 </head>
 <body id="bo_2">
   {% include "header_ngo.html" %}
-  <div class="container">
+  <div class="">
+
     <div class="col-12">
       <div class="row">
         <div class="col-md-10 mt-5" style="margin: 20px;">
     <div class="row mt-5">
-      <div class="col-12" id="main">
+
+      <div class="col-2">
+        {% include "sidebar_ngo.html"%}
+      </div>
+
+      <div class="col-10" id="main">
         {{ request.user.email }}
           <h4 >Account Overview</h4>
         <div class="card-box" id="glass_1">

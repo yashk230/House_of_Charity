@@ -12,7 +12,11 @@
 <body id="bo_1">
     {% include "header.html" %}
     <div class="container">
-        <div class="col-12">
+        <div class="row">
+            <div class="col-2">
+                {% include "sidebar_user.html"%}
+            </div>
+        <div class="col-10">
             <div class="row">
                 <div class="col-md-5">
                     <h3 style="font-family: Bahnschrift Condensed;">This is the previous data</h3>
@@ -69,7 +73,7 @@
 
             </div>
         </div>
-
+    </div>
 
     </div>
     {% include "footer_user.html" %}

@@ -30,6 +30,9 @@
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
 
+                  <a class="nav-link active" aria-current="page"
+                        href="/index">Home</a>
+                  {% comment %}
                     {% if id == request.user.id %}
                       <a class="nav-link active" aria-current="page"
                       href="/dashboard_ngo">Home</a>
@@ -38,9 +41,10 @@
                     <a class="nav-link active" aria-current="page"
                       href="/dashboard_user">Home</a>
                     
-                    {% else %}
-                    Home
+                      {% else %}
+                        Home
                       {% endif %}
+                  {% endcomment %}
                 </li>
                 
                 <li class="nav-item"s>
