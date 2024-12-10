@@ -405,31 +405,36 @@ def nlogout(request):
 
 def ngo_profile(request):
     context = {}
-    if ngo_details.objects.exists():
+    if ngo_details.objects.filter(u_id=request.user.id):
         a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
         b=a['u_id']
         print(b)
         context['id']=b
-        context['new']=ngo_details.objects.filter(email = request.user.email)
-        objj=ngo.objects.filter(email = request.user.email)
-        context['ngo']=objj
-    else:
-        context['id']="no data found"
-    u=User.objects.filter(id=request.user.id)
-    if request.method=="POST" :
-        n=request.POST["name"]
-        e=request.POST["email"]
-        a=request.POST["address"]
-        c=request.POST["category"]
-        w=request.POST["works"]
-        aw=request.POST["awards"]
-        i=request.FILES["image"]
-        print("details of NGOO",n,e,a,c,w)
-        ngo_details.objects.create(name=n,email=e,address=a,category=c,works=w,awards=aw,pimage=i,u_id=u[0])
-        ngo.objects.filter(email = request.user.email).delete()
-        return redirect(ngo_profile)
-    return render(request,'ngo_profile.html', context)
+        context['new']=ngo_details.objects.filter(u_id = request.user.id)
 
+    if request.method == "POST":
+        user = User.objects.get(id=request.user.id)
+        ngo_detail = ngo_details.objects.get(u_id=user)
+        
+        # Only update fields if they are present in the request
+        if 'name' in request.POST and request.POST['name']:
+            ngo_detail.name = request.POST['name']
+        if 'email' in request.POST and request.POST['email']:
+            ngo_detail.email = request.POST['email']
+        if 'address' in request.POST and request.POST['address']:
+            ngo_detail.address = request.POST['address']
+        if 'category' in request.POST and request.POST['category']:
+            ngo_detail.category = request.POST['category']
+        if 'works' in request.POST and request.POST['works']:
+            ngo_detail.works = request.POST['works']
+        if 'awards' in request.POST and request.POST['awards']:
+            ngo_detail.awards = request.POST['awards']
+        if 'image' in request.FILES and request.FILES['image']:
+            ngo_detail.pimage = request.FILES['image']
+        ngo_detail.save()
+        ngo.objects.filter(email=request.user.email).delete()
+        return redirect(ngo_profile)
+    return render(request,'ngo_profile.html',context)
 
 def dashboard_ngo(request):
     context={}
