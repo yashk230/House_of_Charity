@@ -23,7 +23,6 @@ from my_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index),
-    # path('header/',views.header),
     path('home/',views.home),
     path('base/',views.base),
     path('index/',views.index),
