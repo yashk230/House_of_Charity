@@ -18,8 +18,8 @@
     <div class="col-12">
       <div class="row">
         <div class="col-md-10 mt-5" style="margin: 20px;">
+    
     <div class="row mt-5">
-
       <div class="col-2">
         {% include "sidebar_ngo.html"%}
       </div>
@@ -27,9 +27,8 @@
       <div class="col-10" id="main">
         {{ request.user.email }}
           <h4 >Account Overview</h4>
-        <div class="card-box" id="glass_1">
-          
-          <h4><a href="/ngo_profile">Profile Overview of NGO</a></h4>
+          <div class="card-box" id="glass_1">
+            <h4><a href="/ngo_profile">Profile Overview of NGO</a></h4>
             <a href="/donor_connected">Total Donors Connected</a>
             &nbsp;
             &nbsp;

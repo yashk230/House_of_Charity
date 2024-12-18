@@ -159,12 +159,16 @@ def ngos_connected(request):    ###to display the conneted ngos
     return render(request,'ngos_connected.html',context)
 
 def new_ngo(request):
+    
     context={}
-    obj=ngo_details.objects.all()
-    for n in ngo_details.objects.all():
-        if connected_ngos.objects.filter(n_id=n.id):
-            context['a']="CONNECTED"
-    context['ngo']=obj
+    
+    userid=request.user.id
+    for id in ngo_details.objects.all():
+        ngo_id=id.u_id
+    
+        if connected_ngos.objects.filter(c_id=userid,n_id=ngo_id).exists():
+            context['ngo']=ngo_details.objects.all()
+    
     return render(request,'new_ngo.html',context)
 
 #########################################################
@@ -411,58 +415,43 @@ def ngo_profile(request):
         print(b)
         context['id']=b
         context['new']=ngo_details.objects.filter(u_id = request.user.id)
-
+        context['image']=ngo_details.objects.filter(u_id = request.user.id)
+    
     if request.method == "POST":
-        user = User.objects.get(id=request.user.id)
-        ngo_detail = ngo_details.objects.get(u_id=user)
-        
-        # Only update fields if they are present in the request
-        if 'name' in request.POST and request.POST['name']:
-            ngo_detail.name = request.POST['name']
-        if 'email' in request.POST and request.POST['email']:
-            ngo_detail.email = request.POST['email']
-        if 'address' in request.POST and request.POST['address']:
-            ngo_detail.address = request.POST['address']
-        if 'category' in request.POST and request.POST['category']:
-            ngo_detail.category = request.POST['category']
-        if 'works' in request.POST and request.POST['works']:
-            ngo_detail.works = request.POST['works']
-        if 'awards' in request.POST and request.POST['awards']:
-            ngo_detail.awards = request.POST['awards']
-        if 'image' in request.FILES and request.FILES['image']:
-            ngo_detail.pimage = request.FILES['image']
-        ngo_detail.save()
-        ngo.objects.filter(email=request.user.email).delete()
-        return redirect(ngo_profile)
+        if ngo_details.objects.filter(u_id = request.user.id):
+            user = User.objects.get(id=request.user.id)
+            ngo_detail = ngo_details.objects.get(u_id=user)
+            
+            # Only update fields if they are present in the request
+            if 'name' in request.POST and request.POST['name']:
+                ngo_detail.name = request.POST['name']
+            if 'email' in request.POST and request.POST['email']:
+                ngo_detail.email = request.POST['email']
+            if 'address' in request.POST and request.POST['address']:
+                ngo_detail.address = request.POST['address']
+            if 'category' in request.POST and request.POST['category']:
+                ngo_detail.category = request.POST['category']
+            if 'works' in request.POST and request.POST['works']:
+                ngo_detail.works = request.POST['works']
+            if 'awards' in request.POST and request.POST['awards']:
+                ngo_detail.awards = request.POST['awards']
+            if 'image' in request.FILES and request.FILES['image']:
+                ngo_detail.pimage = request.FILES['image']
+            ngo_detail.save()
+            ngo.objects.filter(email=request.user.email).delete()
+            return redirect(ngo_profile)
+        else:
+            context['error']="Data not saved"
     return render(request,'ngo_profile.html',context)
+
 
 def dashboard_ngo(request):
     context={}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    if a is None:
-        print("is",a)
-    else:
-        b=a['u_id']
-        context['id']=b
-        
-    aa=ngo.objects.filter(n_id=request.user.id).values('n_id').first()
-    if aa is None:
-        print("")
-    else:
-        bb=aa['n_id']
-        context['id']=bb
-    
-    if request.user.is_authenticated:
-        # if connected_donor.objects.filter(ngo_id=request.user.id):
-        print("user",request.user.id)
-        for n in ngo_details.objects.filter(u_id=request.user.id):
-            print(n.u_id)
-        
-        
-        for a in connected_donor.objects.filter(ngo_id=request.user.id):
-            print(a.d_id)
-            a=user_details.objects.filter(d_id=a.d_id).count()
-            context['count']=a
+    if ngo.objects.filter(n_id=request.user.id).exists:
+        for e in ngo.objects.filter(n_id=request.user.id):
+            mail=e.email
+            nid=e.n_id
+            ngo_details.objects.create(email=mail,u_id=nid)
     return render(request,'dashboard_ngo.html',context)
 
 
@@ -611,7 +600,6 @@ def ngo_details_work(request,wid):
 
 def donor_connected(request):
     context={}
-    
     a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
     b=a['u_id']
     # print(a,'one',b)
@@ -633,4 +621,5 @@ def contact(request):
     return render(request,'contact.html')
 
 def admin_pannel(request):
+    return render(request,'admin_pannel.html')
     return render(request,'admin_pannel.html')

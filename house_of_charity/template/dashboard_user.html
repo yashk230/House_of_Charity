@@ -9,17 +9,16 @@
   <body id="bo_1">
     {% include "header.html" %}
     <div class="container">
-      <h1 style="font-family: Bahnschrift Condensed;">User Account</h1>
-      <h4><a href="/user_profile"
-          class="link-offset-2 link-underline link-underline-opacity-0"
-          style="color: rgb(227, 74, 74);">Profile</a></h4>
-
       <div class="row">
         <div class="col-2">
-          {% comment %} {% include "sidebar-user.html"%} {% endcomment %}
+          {% include "sidebar_user.html"%}
         </div>
+    <div class="col-10" id="main">
 
-      <div class="col-10" id="main">
+        <h1 style="font-family: Bahnschrift Condensed;">User Account</h1>
+        <h4><a href="/user_profile"
+            class="link-offset-2 link-underline link-underline-opacity-0"
+            style="color: rgb(227, 74, 74);">Profile</a></h4>
         <div class="card-box" id="glass">
           <h4 style="color: whitesmoke;">Account Overview</h4>
           <a
