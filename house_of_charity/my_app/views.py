@@ -159,9 +159,7 @@ def ngos_connected(request):    ###to display the conneted ngos
     return render(request,'ngos_connected.html',context)
 
 def new_ngo(request):
-    
     context={}
-    
     userid=request.user.id
     for id in ngo_details.objects.all():
         ngo_id=id.u_id
