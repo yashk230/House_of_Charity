@@ -38,7 +38,7 @@ class ngo(models.Model):
     email=models.CharField(max_length=50)
 
 class ngo_details(models.Model):
-    u_id=models.ForeignKey('auth.User',on_delete=models.CASCADE,db_column='u_id')
+    ngo_id=models.ForeignKey('auth.User',on_delete=models.CASCADE,db_column='ngo_id')
     name=models.CharField(max_length=50)
     email=models.CharField(max_length=50)
     address=models.CharField(max_length=5000)

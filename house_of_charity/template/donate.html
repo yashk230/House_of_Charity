@@ -12,7 +12,11 @@
         <h1>This is the page where the donations type will appear</h1>
         <div class="col-12">
             <div class="row">
-                <div class="">
+                <div class="col-2">
+                    {% include "sidebar_user.html"%}
+                </div>
+
+                <div class="col-10">
                     <h4><a href="/initiate-payment/{{nid}}">Donate Money</a></h4>
                     <h4><a href="/daily_donate/{{nid}}">Donate Daily Essentials</a></h4>
                     <h4><a href="/food_donate/{{nid}}">Donate Food Items</a></h4>

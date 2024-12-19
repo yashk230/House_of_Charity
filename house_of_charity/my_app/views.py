@@ -160,12 +160,11 @@ def ngos_connected(request):    ###to display the conneted ngos
 
 def new_ngo(request):
     context={}
-    userid=request.user.id
-    for id in ngo_details.objects.all():
-        ngo_id=id.u_id
-    
-        if connected_ngos.objects.filter(c_id=userid,n_id=ngo_id).exists():
-            context['ngo']=ngo_details.objects.all()
+    userid = request.user.id
+    ngos = ngo_details.objects.all()
+    connected_ngos_list = list(connected_ngos.objects.filter(c_id=userid).values_list('n_id', flat=True))
+    print("connected",connected_ngos_list)
+    context['ngo'] = ngos.exclude(id__in=connected_ngos_list)
     
     return render(request,'new_ngo.html',context)
 
