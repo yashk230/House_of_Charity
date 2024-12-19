@@ -15,11 +15,19 @@
             <div class="col-2">
                 {% include "sidebar_user.html"%}
             </div>
+
             {% if no %}
                 <div>
                     <h3>{{ no }}</h1>
                 </div>
             {% endif %}
+            
+            {% if msg %}
+                <div>
+                    <h3>{{ msg }}</h1>
+                </div>
+            {% endif %}
+            
             {% for connect in connect %}
             <div class="col-md-4">
                 <div class=" col-md-6 mt-3" style="width:100%;">
@@ -30,7 +38,8 @@
                     <p class="card-text" style="color: lightgreen;">Address{{connect.n_id.address}}</p>
                     <p class="card-text" style="color: lightgreen;">Category:{{connect.n_id.category}}</p>
                     <p class="card-title" style="color: lightgreen;">{{connect.n_id.email}}</p>
-                        
+                    <button type="submit"
+                    class="btn btn-outline-warning mt-3"><a href="/ngo_disconnected/{{connect.id}}">Disconnect</a></button>
                     </div>
                 </div>
             </div>

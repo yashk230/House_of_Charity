@@ -152,11 +152,15 @@ def ngos_connected(request):    ###to display the conneted ngos
         context['connect']=connected_ngos.objects.filter(c_id=request.user.id)
     else:
         context['no']="Sorry You are not connected to any NGO"
-    # for obj in connected_ngos.objects.all():
-    #     a=obj.c_id.id = request.user.id
-    #     print("yash",a)
-    
     return render(request,'ngos_connected.html',context)
+
+def ngo_disconnected(request,nid):
+    disconnect=connected_ngos.objects.filter(id=nid)
+    dis=connected_donor.objects.filter(id=nid)
+    if disconnect.delete():
+        context={}
+        context['msg']="Ngo Disconnected Successfully"
+    return render (request,'ngos_connected.html',context)
 
 def new_ngo(request):
     context={}
@@ -172,22 +176,6 @@ def new_ngo(request):
 def ngo_detail(request,nid):
     context={}
     detail=ngo_details.objects.filter(id=int(nid))
-    
-    # list1=ngo_details.objects.all()
-    # list2=connected_ngos.objects.all()
-    # list_name=[]
-    # name_list=[]
-    # for x in list1:
-    #     list_name.append(x.email)
-    # for y in list2:
-    #     name_list.append(y.email)
-    # if any(item in list_name for item in name_list):
-    #     context['error']="Ngo Already added"
-    #     return render(request,'ngo_details.html',context)
-    # else:
-    #     for ngo in ngo_details.objects.filter(id=int(nid)):
-    #         connected_ngos.objects.create(name=ngo.name,email=ngo.email,address=ngo.address,category=ngo.category,works=ngo.works,awards=ngo.awards,pimage=ngo.pimage)
-    # return render(request,'ngo_details.html',context)
     context['ngo']=detail
     return render(request,'ngo_details.html',context)
 ##############################################
@@ -197,18 +185,14 @@ def ngo_connect(request,nid): ##when user clicks on the connect to ngo button
     if request.user.is_authenticated:
         u=User.objects.filter(id=request.user.id)
         print("yash",u)
-        # n=ngo_details.objects.filter()
-        # for ngo in ngo_details.objects.filter(id=int(nid)):
         n=ngo_details.objects.filter(id=int(nid)).first()
-        # q=connected_ngos.objects.filter(n_id =n)[:1]
-        if connected_ngos.objects.filter(n_id = n, c_id=request.user.id):#q.exists():
+        if connected_ngos.objects.filter(n_id = n, c_id=request.user.id):
             context['msg']='Ngo already exists'
         else:
             context['msg']='Ngo Added Successfully'
             connected_ngos.objects.create(c_id=u[0],n_id=n)
         
-        # for use in user_details.objects.filter(d_id=request.user.id):
-        if connected_donor.objects.filter(ngo_id=n,d_id=request.user.id):#.exists():
+        if connected_donor.objects.filter(ngo_id=n,d_id=request.user.id):
             context['msg']='Ngo already exists'
         else:
             context['msg']='Ngo Added Successfully'

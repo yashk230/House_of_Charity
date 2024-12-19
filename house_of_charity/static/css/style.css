@@ -81,11 +81,11 @@ body {
 }
 #glass{
     background: rgba(84, 26, 125, 0.5); /* Adjust transparency as needed */
-  color: #ffffff; /* This is white color for the text */
-  padding: 10px; /* Adjust padding as needed */ /* Full width */
-  width: 60%;
+    color: #ffffff; /* This is white color for the text */
+    padding: 10px; /* Adjust padding as needed */ /* Full width */
+    
   /* position: fixed; Keeps the navbar fixed at the top */
-  
+
   z-index: 1000; /* Ensures the navbar is above other elements */
 }
 #glass_1{
@@ -93,7 +93,6 @@ body {
   color: #ffffff; /* This is white color for the text */
   padding: 10px; /* Adjust padding as needed */ /* Full width */
   /* position: fixed; Keeps the navbar fixed at the top */
-  width: 90%;
   z-index: 1000; /* Ensures the navbar is above other elements */
 }
 .tab{

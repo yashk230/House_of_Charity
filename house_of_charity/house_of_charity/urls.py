@@ -76,6 +76,7 @@ urlpatterns = [
     path('ngo_profile/',views.ngo_profile),
     path('new_ngo/',views.new_ngo),
     path('ngos_connected/',views.ngos_connected),
+    path('ngo_disconnected/<nid>/',views.ngo_disconnected),
     path('ngo_detail/<nid>/',views.ngo_detail),
     path('ngo_connect/<nid>/',views.ngo_connect),
 #####################################################################
