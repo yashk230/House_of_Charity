@@ -142,8 +142,15 @@ def ulogout(request):
 ######################################################
 
 def index(request):
-    # print(request.user.is_authenticated)
     return render(request,'index.html')
+
+def header(request):
+    context={}
+    user=user_details.objects.filter(d_id=request.user.id)
+    ngo=ngo_details.objects.filter(ngo_id=request.user.id)
+    print('user',user)
+    print('ngo',ngo)
+    return render(request,'index.html',context)
 #######################################################
 
 def ngos_connected(request):    ###to display the conneted ngos

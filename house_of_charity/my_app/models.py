@@ -57,7 +57,6 @@ class connected_donor(models.Model):
     
 class user_details(models.Model):
     d_id=models.ForeignKey('auth.User',on_delete=models.CASCADE,db_column='userid')
-    # ngo_id=models.ForeignKey('ngo_details',on_delete=models.CASCADE,db_column='ngo')
     name=models.CharField(max_length=50)
     email=models.CharField(max_length=50)
     phone=models.CharField(max_length=15,null=True)
