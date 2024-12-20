@@ -23,8 +23,6 @@ from my_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index),
-    path('home/',views.home),
-    path('base/',views.base),
     path('index/',views.index),
     path('who_are_we/',views.who_are_we),
     path('what_we_do/',views.what_we_do),
