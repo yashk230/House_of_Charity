@@ -145,9 +145,9 @@ def index(request):
     # print(request.user.is_authenticated)
     return render(request,'index.html')
 #######################################################
+
 def ngos_connected(request):    ###to display the conneted ngos
     context={}
-    
     if connected_ngos.objects.filter(c_id=request.user.id):
         context['connect']=connected_ngos.objects.filter(c_id=request.user.id)
     else:
@@ -155,11 +155,15 @@ def ngos_connected(request):    ###to display the conneted ngos
     return render(request,'ngos_connected.html',context)
 
 def ngo_disconnected(request,nid):
+    for user in connected_ngos.objects.filter(id=nid):
+        del_id=user.n_id
+        if connected_donor.objects.filter(ngo_id=del_id):
+            connected_donor.objects.filter(ngo_id=del_id).delete()
     disconnect=connected_ngos.objects.filter(id=nid)
-    dis=connected_donor.objects.filter(id=nid)
-    if disconnect.delete():
-        context={}
-        context['msg']="Ngo Disconnected Successfully"
+    context={}
+    disconnect.delete()
+    context['msg']="Ngo Disconnected Successfully"
+    
     return render (request,'ngos_connected.html',context)
 
 def new_ngo(request):
