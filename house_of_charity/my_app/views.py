@@ -254,7 +254,10 @@ def update_pass(request):
 
 def make_donations(request):
     context={}
-    context['ngo']=connected_ngos.objects.filter(c_id=request.user.id)
+    if connected_ngos.objects.exists():
+        context['ngo']=connected_ngos.objects.filter(c_id=request.user.id)
+    else:
+        context['msg']="You are not connected to any NGO"
     return render(request,'make_donations.html',context)
 
 def donate(request,nid):
@@ -349,15 +352,25 @@ def food_donate(request,nid):
 
 def donations_made(request):
     context={}
-    moneye=money.objects.filter(user=request.user.id , paid=1)
-    context['money']=moneye
-    foode=food.objects.filter(userid=request.user.id)
-    context['food']=foode
-    dailyy=daily.objects.filter(userid=request.user.id)
-    context['daily']=dailyy
+    if money.objects.exists():
+        context['money']=money.objects.filter(user=request.user.id , paid=1)
+        context['moneyd']="This is for Money donations made"
+    else:
+        context['moneyy']="You have not made any donations in Money"
+    
+    if food.objects.exists():
+        context['food']=food.objects.filter(userid=request.user.id)
+    else:
+        context['foodd']="You have not made any donations in Food"
+    
+    if daily.objects.exists():
+        context['daily']=daily.objects.filter(userid=request.user.id)
+    else:
+        context['dailyy']="You have not made any donations in Daily Essentials"
+    context['daily']=daily.objects.filter(userid=request.user.id)
     return render(request,'donations_made.html',context)
     
-        
+    
 
 #############################################
 
@@ -401,18 +414,18 @@ def nlogout(request):
 
 def ngo_profile(request):
     context = {}
-    if ngo_details.objects.filter(u_id=request.user.id):
-        a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-        b=a['u_id']
+    if ngo_details.objects.filter(ngo_id=request.user.id):
+        a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+        b=a['ngo_id']
         print(b)
         context['id']=b
-        context['new']=ngo_details.objects.filter(u_id = request.user.id)
-        context['image']=ngo_details.objects.filter(u_id = request.user.id)
+        context['new']=ngo_details.objects.filter(ngo_id = request.user.id)
+        context['image']=ngo_details.objects.filter(ngo_id = request.user.id)
     
     if request.method == "POST":
-        if ngo_details.objects.filter(u_id = request.user.id):
+        if ngo_details.objects.filter(ngo_id = request.user.id):
             user = User.objects.get(id=request.user.id)
-            ngo_detail = ngo_details.objects.get(u_id=user)
+            ngo_detail = ngo_details.objects.get(ngo_id=user)
             
             # Only update fields if they are present in the request
             if 'name' in request.POST and request.POST['name']:
@@ -443,17 +456,17 @@ def dashboard_ngo(request):
         for e in ngo.objects.filter(n_id=request.user.id):
             mail=e.email
             nid=e.n_id
-            ngo_details.objects.create(email=mail,u_id=nid)
+            ngo_details.objects.create(email=mail,ngo_id=nid)
     return render(request,'dashboard_ngo.html',context)
 
 
 def donation_request(request):
     context={}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     # print(b)
     context['id']=b
-    for n in ngo_details.objects.filter(u_id=request.user.id):
+    for n in ngo_details.objects.filter(ngo_id=request.user.id):
         f=food.objects.filter(ngo_id=n.id,Status="UnResponded")
         context['f']=f
         ff=daily.objects.filter(ngo_id=n.id,Status="UnResponded")
@@ -500,12 +513,12 @@ def donation_request_update_daily(request,did):   # data from the form is collec
 def to_be_received(request):
     context={}
     
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     print(b)
     context['id']=b
     
-    for n in ngo_details.objects.filter(u_id=request.user.id):
+    for n in ngo_details.objects.filter(ngo_id=request.user.id):
         f=food.objects.filter(ngo_id=n.id,Status="Accepted")
         context['f']=f
         ff=daily.objects.filter(ngo_id=n.id,Status="Accepted")
@@ -547,12 +560,12 @@ def to_be_received_daily(request,did):   # data from the form is collected in th
 
 def donations_received(request):
     context={}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     print(b)
     context['id']=b
     
-    for n in ngo_details.objects.filter(u_id=request.user.id):
+    for n in ngo_details.objects.filter(ngo_id=request.user.id):
         context['m']=money.objects.filter(ngo_id=n.id)
         context['f']=food.objects.filter(ngo_id=n.id,Status="Received")
         context['c']=daily.objects.filter(ngo_id=n.id,Status="Received")
@@ -561,12 +574,12 @@ def donations_received(request):
 def donations_rejected(request):
     context={}
     
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     print(b)
     context['id']=b
     
-    for n in ngo_details.objects.filter(u_id=request.user.id):
+    for n in ngo_details.objects.filter(ngo_id=request.user.id):
         context['f']=food.objects.filter(ngo_id=n.id,Status="Rejected")
         context['c']=daily.objects.filter(ngo_id=n.id,Status="Rejected")
     return render(request,'rejected.html',context)
@@ -578,8 +591,8 @@ def ngo_login(request):
 
 def work_done(request):
     context={}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     print(b)
     context['id']=b
     
@@ -592,14 +605,14 @@ def ngo_details_work(request,wid):
 
 def donor_connected(request):
     context={}
-    a=ngo_details.objects.filter(u_id=request.user.id).values('u_id').first()
-    b=a['u_id']
+    a=ngo_details.objects.filter(ngo_id=request.user.id).values('ngo_id').first()
+    b=a['ngo_id']
     # print(a,'one',b)
     context['id']=b
     
     if request.user.is_authenticated:
-        if ngo_details.objects.filter(u_id=request.user.id):
-            a=ngo_details.objects.filter(u_id=request.user.id).values('id')
+        if ngo_details.objects.filter(ngo_id=request.user.id):
+            a=ngo_details.objects.filter(ngo_id=request.user.id).values('id')
             b=a[0]['id']
             for c in connected_donor.objects.filter(ngo_id=b):
                 print("user",c.d_id)

@@ -15,7 +15,11 @@
             <div class="col-2">
                 {% include "sidebar_user.html"%}
             </div>
-
+            {% if msg %}
+            <div class="alert alert-success" role="alert">
+                {{msg}}
+            </div>
+            {% endif %}
         <div class="col-10">
             {% for ngo in ngo %}
             

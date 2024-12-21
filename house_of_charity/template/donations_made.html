@@ -22,17 +22,25 @@
                 <!-- <div class="col-4" id="div"> -->
                     <div class="col-10" id="hover-container">
                         <div class="row">
-                            <h3 id="hover-text" style="color: whitesmoke;">This is for Money donations made</h3>
-                            <div class="col-6" id="hidden-content">
+                            {% if moneyy %}
+                                <div>
+                                    <h3>{{moneyy}}</h3>
+                                </div>
+                            {% endif %}
+                            <h3 id="hover-text" style="color: whitesmoke;"></h3>
+                            
+                            <div class="col-10" id="hidden-content">
                                 <table id="" class="tab">
                                     <tr>
                                         <th>Amount in Rs</th>
                                         <th>Date</th>
+                                        <th>Ngo Name</th>
                                     </tr>
                                     {% for money in money %}
                                     <tr>
                                         <td>{{money.amount}}</td>
                                         <td>{{money.created_at}}</td>
+                                        <td>{{money.ngo_id.name}}</td>
                                     </tr>
                                     {% endfor %}
                                 </table>
@@ -45,8 +53,14 @@
                 <!-- <div class="col-4" id="div"> -->
                 <div class="col-10" id="hover-container">
                     <div class="row">
+                        {% if foodd %}
+                            <div>
+                                <h3>{{foodd}}</h3>
+                            </div>
+                        {% endif %}
                         <h3 id="hover-text" style="color: whitesmoke;">Donations of food items</h3>
-                            <div class="col-8" id="hidden-content" class="tab">
+                        
+                            <div class="col-10" id="hidden-content" class="tab">
                                 <table id="food" class="tab">
                                     <tr>
                                         <th>Items</th>
@@ -55,6 +69,7 @@
                                         <th>Servings</th>
                                         <th>Approx Time of item expiry</th>
                                         <th>Address</th>
+                                        <th>Ngo Name</th>
                                     </tr>
                                     {% for food in food %}
                                     <tr>
@@ -64,6 +79,7 @@
                                         <td>{{food.Serving}}</td>
                                         <td>{{food.Expire}}</td>
                                         <td>{{food.Address}}</td>
+                                        <td>{{food.ngo_id.name}}</td>
                                     </tr>
                                     {% endfor %}
                                 </table>
@@ -75,13 +91,20 @@
 
                 <div class="col-10" id="hover-container">
                     <div class="row">
+                        {% if dailyy %}
+                                <div>
+                                    <h3>{{dailyy}}</h3>
+                                </div>
+                            {% endif %}
                         <h3 id="hover-text" style="color: whitesmoke;">Donations of Daily Essentials</h3>
-                        <div class="col-6" id="hidden-content">
+                            
+                            <div class="col-10" id="hidden-content">
                                 <table class="tab">
                                     <tr>
                                         <th>Types</th>
                                         <th>Items</th>
                                         <th>Address</th>
+                                        <th>Ngo Name</th>
                                     </tr>
 
                                     {% for dailyy in daily %}
@@ -89,6 +112,7 @@
                                         <td>{{dailyy.type}}</td>
                                         <td>{{dailyy.items}}</td>
                                         <td>{{dailyy.Address}}</td>
+                                        <td>{{dailyy.ngo_id.name}}</td>
                                     </tr>
                                     {% endfor %}
                                 </table>
